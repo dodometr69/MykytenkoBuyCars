@@ -77,6 +77,59 @@ reviewsCarousel?.addEventListener("scroll", () => {
   window.requestAnimationFrame(updateReviewDots);
 });
 
-document.querySelector(".lead-form")?.addEventListener("submit", (event) => {
+const leadForm = document.querySelector(".lead-form");
+const webhookUrl = "https://hook.eu1.make.com/ro7y86433tu2tlv6vdwkfbkg245q9yio";
+
+leadForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  const form = event.currentTarget;
+  const submitButton = form.querySelector(".form-submit");
+  const status = form.querySelector(".form-status");
+  const formData = new FormData(form);
+  const selectedBudget = form.querySelector('input[name="budget"]:checked');
+  const budgetText = selectedBudget?.closest("label")?.textContent.trim() || formData.get("budget");
+
+  const payload = {
+    name: String(formData.get("name") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    budget: budgetText,
+  };
+
+  if (status) {
+    status.textContent = "";
+    status.classList.remove("is-error", "is-success");
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Відправляємо...";
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Webhook request failed");
+    }
+
+    form.reset();
+
+    if (status) {
+      status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";
+      status.classList.add("is-success");
+    }
+  } catch (error) {
+    if (status) {
+      status.textContent = "Не вдалося відправити заявку. Спробуйте ще раз.";
+      status.classList.add("is-error");
+    }
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Отримати підбір авто";
+  }
 });

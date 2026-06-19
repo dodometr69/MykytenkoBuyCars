@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MykytenkoBuyCars</title>
-    <link rel="stylesheet" href="styles/main.css?v=20260619-1810" />
+    <link rel="stylesheet" href="styles/main.css?v=20260620-1010" />
   </head>
   <body>
     <header class="site-header" data-animate>
@@ -474,12 +474,12 @@
 
             <label class="form-field">
               <span>Ваше ім’я</span>
-              <input type="text" name="name" placeholder="Введіть ваше ім’я" />
+              <input type="text" name="name" placeholder="Введіть ваше ім’я" required />
             </label>
 
             <label class="form-field">
               <span>Телефон</span>
-              <input type="tel" name="phone" placeholder="+38 (___) ___-__-__" />
+              <input type="tel" name="phone" placeholder="+38 (___) ___-__-__" required />
             </label>
 
             <fieldset class="budget-field">
@@ -510,6 +510,8 @@
                 Підберемо оптимальні варіанти під Ваші параметри та побажання.
               </p>
             </div>
+
+            <p class="form-status" aria-live="polite"></p>
           </form>
         </div>
       </section>
@@ -520,6 +522,6 @@
       <small>З експертом</small>
     </a>
 
-    <script src="scripts/main.js?v=20260619-1615"></script>
+    <script src="scripts/main.js?v=20260620-1010"></script>
   </body>
 </html>

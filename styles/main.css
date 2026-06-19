@@ -1149,7 +1149,8 @@ h1 {
 .form-field,
 .budget-field,
 .form-submit,
-.form-note {
+.form-note,
+.form-status {
   position: relative;
   z-index: 1;
 }
@@ -1243,6 +1244,12 @@ h1 {
   transform: translateY(-2px);
 }
 
+.form-submit:disabled {
+  opacity: 0.72;
+  cursor: wait;
+  transform: none;
+}
+
 .form-note {
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr);
@@ -1269,6 +1276,23 @@ h1 {
   font-size: 14px;
   font-weight: 700;
   line-height: 1.44;
+}
+
+.form-status {
+  min-height: 22px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.form-status.is-success {
+  color: #d8fff0;
+}
+
+.form-status.is-error {
+  color: #ffd9d9;
 }
 
 .floating-cta {
