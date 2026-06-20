@@ -117,6 +117,10 @@ leadForm?.addEventListener("submit", async (event) => {
       throw new Error("Webhook request failed");
     }
 
+    if (typeof fbq === "function") {
+      fbq("track", "Lead");
+    }
+
     form.reset();
 
     if (status) {

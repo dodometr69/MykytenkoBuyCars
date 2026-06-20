@@ -581,27 +581,6 @@ h1 {
   gap: 14px;
 }
 
-.process-path {
-  position: absolute;
-  inset: 18px 18px;
-  z-index: 2;
-  width: calc(100% - 36px);
-  height: calc(100% - 36px);
-  overflow: visible;
-  pointer-events: none;
-}
-
-.process-path path {
-  fill: none;
-  stroke: rgba(27, 59, 48, 0.72);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 8 7;
-  filter: drop-shadow(0 6px 12px rgba(27, 59, 48, 0.12));
-  vector-effect: non-scaling-stroke;
-}
-
 .process-step {
   position: relative;
   display: grid;
@@ -639,8 +618,26 @@ h1 {
 }
 
 .process-step::after {
+  position: absolute;
+  z-index: 4;
+  border-top: 3px dashed rgba(27, 59, 48, 0.72);
   content: "";
-  display: none;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 12px rgba(27, 59, 48, 0.12));
+}
+
+.process-step:nth-child(odd):not(:last-child)::after {
+  top: 50%;
+  right: -19px;
+  width: 24px;
+}
+
+.process-step:nth-child(even):not(:last-child)::after {
+  bottom: -15px;
+  left: -20px;
+  width: 31px;
+  transform: rotate(135deg);
+  transform-origin: center;
 }
 
 .process-step span {
@@ -1690,17 +1687,6 @@ h1 {
     gap: 10px;
   }
 
-  .process-path {
-    inset: 14px 13px;
-    width: calc(100% - 26px);
-    height: calc(100% - 28px);
-  }
-
-  .process-path path {
-    stroke-width: 2;
-    stroke-dasharray: 6 6;
-  }
-
   .process-step {
     grid-template-columns: 1fr;
     align-content: space-between;
@@ -1711,7 +1697,18 @@ h1 {
   }
 
   .process-step::after {
-    display: none;
+    border-top-width: 3px;
+  }
+
+  .process-step:nth-child(odd):not(:last-child)::after {
+    right: -15px;
+    width: 20px;
+  }
+
+  .process-step:nth-child(even):not(:last-child)::after {
+    bottom: -12px;
+    left: -17px;
+    width: 25px;
   }
 
   .process-step span {
@@ -1903,15 +1900,20 @@ h1 {
     gap: 8px;
   }
 
-  .process-path {
-    inset: 12px 10px;
-    width: calc(100% - 20px);
-    height: calc(100% - 24px);
-  }
-
   .process-step {
     min-height: 142px;
     padding: 12px;
+  }
+
+  .process-step:nth-child(odd):not(:last-child)::after {
+    right: -13px;
+    width: 18px;
+  }
+
+  .process-step:nth-child(even):not(:last-child)::after {
+    bottom: -11px;
+    left: -15px;
+    width: 22px;
   }
 
   .process-step h3 {
