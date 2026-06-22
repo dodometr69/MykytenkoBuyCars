@@ -20,6 +20,102 @@ document.querySelectorAll(".site-nav a").forEach((link) => {
   });
 });
 
+const checkSection = document.querySelector("#ukraine-check");
+const checkTriggers = document.querySelectorAll("[data-check-trigger]");
+const leadPopup = document.querySelector("[data-lead-popup]");
+const leadPopupClose = document.querySelector("[data-lead-popup-close]");
+const leadPopupAction = document.querySelector("[data-lead-popup-action]");
+const isMobileViewport = window.matchMedia("(max-width: 820px)").matches;
+const leadPopupDelay = isMobileViewport ? 30000 : 27000;
+const leadPopupScrollTarget = isMobileViewport ? 40 : 35;
+let leadPopupTimerReady = false;
+let leadPopupScrollReady = false;
+let leadPopupWasShown = sessionStorage.getItem("leadPopupShown") === "true";
+
+const openCheckSection = () => {
+  if (!checkSection) return;
+
+  checkSection.hidden = false;
+  checkSection.classList.add("is-open");
+  checkSection.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+checkTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    header.classList.remove("menu-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    openCheckSection();
+  });
+});
+
+const hideLeadPopup = (remember = false) => {
+  if (!leadPopup) return;
+
+  leadPopup.classList.remove("is-visible");
+
+  window.setTimeout(() => {
+    leadPopup.hidden = true;
+  }, 260);
+
+  if (remember) {
+    sessionStorage.setItem("leadPopupClosed", "true");
+  }
+};
+
+const showLeadPopup = () => {
+  if (!leadPopup) return;
+  if (leadPopupWasShown) return;
+  if (sessionStorage.getItem("leadPopupClosed") === "true") return;
+  if (sessionStorage.getItem("leadSubmitted") === "true") return;
+
+  leadPopupWasShown = true;
+  sessionStorage.setItem("leadPopupShown", "true");
+  leadPopup.hidden = false;
+  window.requestAnimationFrame(() => leadPopup.classList.add("is-visible"));
+};
+
+const getScrollProgress = () => {
+  const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+  if (scrollableHeight <= 0) return 100;
+
+  return (window.scrollY / scrollableHeight) * 100;
+};
+
+const tryShowLeadPopup = () => {
+  if (leadPopupTimerReady && leadPopupScrollReady) {
+    showLeadPopup();
+  }
+};
+
+const updateLeadPopupScroll = () => {
+  leadPopupScrollReady = getScrollProgress() >= leadPopupScrollTarget;
+  tryShowLeadPopup();
+};
+
+window.setTimeout(() => {
+  leadPopupTimerReady = true;
+  updateLeadPopupScroll();
+}, leadPopupDelay);
+
+window.addEventListener("scroll", updateLeadPopupScroll, { passive: true });
+
+if (!isMobileViewport) {
+  document.addEventListener("mouseleave", (event) => {
+    if (event.clientY <= 0) {
+      showLeadPopup();
+    }
+  });
+}
+
+leadPopupClose?.addEventListener("click", () => hideLeadPopup(true));
+
+leadPopupAction?.addEventListener("click", () => {
+  hideLeadPopup(true);
+  document.querySelector("#contacts")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 const reviewsCarousel = document.querySelector("[data-reviews-carousel]");
 const reviewCards = reviewsCarousel ? Array.from(reviewsCarousel.querySelectorAll(".review-card")) : [];
 const reviewDots = Array.from(document.querySelectorAll("[data-carousel-dot]"));
@@ -120,6 +216,9 @@ leadForm?.addEventListener("submit", async (event) => {
     if (typeof fbq === "function") {
       fbq("track", "Lead");
     }
+
+    sessionStorage.setItem("leadSubmitted", "true");
+    hideLeadPopup(true);
 
     form.reset();
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MykytenkoBuyCars</title>
-    <link rel="stylesheet" href="styles/main.css?v=20260620-1152" />
+    <link rel="stylesheet" href="styles/main.css?v=20260622-2154" />
     <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
@@ -54,6 +54,10 @@
           <span>Як працюємо</span>
           <small>Етапи від заявки до передачі авто</small>
         </a>
+        <a href="#ukraine-check" data-check-trigger>
+          <span>Перевірка авто в Україні</span>
+          <small>Особиста перевірка перед купівлею</small>
+        </a>
         <a href="#contacts">
           <span>Контакти</span>
           <small>Заявка на чесний підбір авто</small>
@@ -74,6 +78,10 @@
     <main>
       <section class="hero">
         <div class="hero-badges" data-animate>
+          <p class="eyebrow hero-eyebrow hero-rank">
+            ЕКСПЕРТ №1 В УКРАЇНІ<span>з персонального підбору авто</span>
+          </p>
+          <p class="hero-mobile-stats">10+ років досвіду • 800+ доставлених авто</p>
           <p class="eyebrow hero-eyebrow">10+ років досвіду</p>
           <p class="eyebrow hero-eyebrow">800+ автомобілів доставлено</p>
         </div>
@@ -145,6 +153,14 @@
             </p>
             <cite>Володимир Микитенко</cite>
           </blockquote>
+
+          <button class="check-teaser" type="button" data-check-trigger>
+            <span>
+              <strong>Купуєте авто в Україні?</strong>
+              Особиста перевірка автомобіля перед купівлею
+            </span>
+            <small>Дізнатися більше</small>
+          </button>
         </div>
       </section>
 
@@ -536,6 +552,68 @@
 
             <p class="form-status" aria-live="polite"></p>
           </form>
+
+          <button class="check-teaser check-teaser-dark" type="button" data-check-trigger>
+            <span>
+              <strong>Потрібна перевірка авто в Україні?</strong>
+              Особистий огляд перед купівлею без зайвого ризику
+            </span>
+            <small>Від 6 000 грн</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="ukraine-check-section" id="ukraine-check" hidden>
+        <div class="ukraine-check-inner">
+          <div class="ukraine-check-card">
+            <div class="check-copy">
+              <p class="section-kicker">Особиста перевірка</p>
+              <h2>Перевірка авто перед купівлею в Україні</h2>
+              <p class="check-lead">
+                Особисто перевіряю автомобілі перед купівлею, щоб виявити приховані дефекти, сліди
+                ремонту та ризики, які продавець може не озвучувати.
+              </p>
+            </div>
+
+            <div class="check-points" aria-label="Що входить у перевірку">
+              <div>
+                <img src="images/check/check-01.webp" alt="" />
+                <span aria-hidden="true">01</span>
+                <p>Кузов та лакофарбове покриття</p>
+              </div>
+              <div>
+                <img src="images/check/check-02.webp" alt="" />
+                <span aria-hidden="true">02</span>
+                <p>Комп’ютерна діагностика</p>
+              </div>
+              <div>
+                <img src="images/check/check-03.webp" alt="" />
+                <span aria-hidden="true">03</span>
+                <p>Технічний стан авто</p>
+              </div>
+              <div>
+                <img src="images/check/check-04.webp" alt="" />
+                <span aria-hidden="true">04</span>
+                <p>Історія та документи</p>
+              </div>
+            </div>
+
+            <p class="check-result">
+              Після перевірки ви отримуєте чесний висновок: купувати авто, торгуватися чи
+              відмовитися від угоди.
+            </p>
+
+            <div class="check-footer">
+              <div>
+                <p class="check-price">Вартість — від 6 000 грн</p>
+                <p class="check-limits">
+                  Перевірки проводяться за попереднім записом. Кількість особистих виїздів обмежена.
+                  Виїзд за межі Києва розраховується окремо.
+                </p>
+              </div>
+              <a class="button button-primary" href="#contacts">Записатися на перевірку</a>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -545,6 +623,17 @@
       <small>З експертом</small>
     </a>
 
-    <script src="scripts/main.js?v=20260620-1125"></script>
+    <div class="lead-popup" data-lead-popup hidden>
+      <button class="lead-popup-close" type="button" data-lead-popup-close aria-label="Закрити пропозицію">
+        ×
+      </button>
+      <p class="lead-popup-title">Потрібна допомога з підбором авто?</p>
+      <p class="lead-popup-text">
+        Залиште заявку, і я підкажу, які варіанти реально варто розглядати у вашому бюджеті.
+      </p>
+      <button class="lead-popup-action" type="button" data-lead-popup-action>Отримати чесний підбір</button>
+    </div>
+
+    <script src="scripts/main.js?v=20260622-2135"></script>
   </body>
 </html>
