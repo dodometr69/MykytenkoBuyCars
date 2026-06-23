@@ -182,12 +182,6 @@ const initLeadForm = () => {
 
   leadSubmitButton?.addEventListener("click", (event) => {
     event.preventDefault();
-
-    if (typeof leadForm.requestSubmit === "function") {
-      leadForm.requestSubmit();
-      return;
-    }
-
     leadForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
   });
 
