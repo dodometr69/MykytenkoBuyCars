@@ -181,19 +181,12 @@ const initLeadForm = () => {
   const webhookUrl = "https://hook.eu1.make.com/ro7y86433tu2tlv6vdwkfbkg245q9yio";
   const leadSubmitButton = leadForm.querySelector(".form-submit");
 
-  leadSubmitButton?.addEventListener("click", (event) => {
-    event.preventDefault();
-    leadForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-  });
-
-  leadForm.addEventListener("submit", async (event) => {
+  leadSubmitButton?.addEventListener("click", async (event) => {
     event.preventDefault();
 
-    const form = event.currentTarget;
-    const submitButton = form.querySelector(".form-submit");
-    const status = form.querySelector(".form-status");
-    const formData = new FormData(form);
-    const selectedBudget = form.querySelector('input[name="budget"]:checked');
+    const status = leadForm.querySelector(".form-status");
+    const formData = new FormData(leadForm);
+    const selectedBudget = leadForm.querySelector('input[name="budget"]:checked');
     const budgetText = selectedBudget?.closest("label")?.textContent.trim() || formData.get("budget");
 
     const payload = {
@@ -207,8 +200,8 @@ const initLeadForm = () => {
       status.classList.remove("is-error", "is-success");
     }
 
-    submitButton.disabled = true;
-    submitButton.textContent = "Відправляємо...";
+    leadSubmitButton.disabled = true;
+    leadSubmitButton.textContent = "Відправляємо...";
 
     try {
       const response = await fetch(webhookUrl, {
@@ -230,7 +223,7 @@ const initLeadForm = () => {
       sessionStorage.setItem("leadSubmitted", "true");
       hideLeadPopup(true);
 
-      form.reset();
+      leadForm.reset();
 
       if (status) {
         status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";
@@ -242,8 +235,8 @@ const initLeadForm = () => {
         status.classList.add("is-error");
       }
     } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = "Отримати підбір авто";
+      leadSubmitButton.disabled = false;
+      leadSubmitButton.textContent = "Отримати підбір авто";
     }
   });
 };
