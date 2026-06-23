@@ -173,71 +173,84 @@ reviewsCarousel?.addEventListener("scroll", () => {
   window.requestAnimationFrame(updateReviewDots);
 });
 
-const leadForm = document.querySelector(".lead-form");
+const initLeadForm = () => {
+  const leadForm = document.querySelector(".lead-form");
 
-leadForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
+  if (!leadForm) return;
 
-  const form = event.currentTarget;
-  const submitButton = form.querySelector(".form-submit");
-  const status = form.querySelector(".form-status");
-  const formData = new FormData(form);
-  const selectedBudget = form.querySelector('input[name="budget"]:checked');
-  const budgetText = selectedBudget?.closest("label")?.textContent.trim() || formData.get("budget");
+  leadForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    console.log("lead submit started");
 
-  const payload = {
-    name: String(formData.get("name") || "").trim(),
-    phone: String(formData.get("phone") || "").trim(),
-    budget: budgetText,
-    turnstileToken: String(formData.get("cf-turnstile-response") || ""),
-    website: String(formData.get("website") || ""),
-  };
+    const form = event.currentTarget;
+    const submitButton = form.querySelector(".form-submit");
+    const status = form.querySelector(".form-status");
+    const formData = new FormData(form);
+    const selectedBudget = form.querySelector('input[name="budget"]:checked');
+    const budgetText = selectedBudget?.closest("label")?.textContent.trim() || formData.get("budget");
 
-  if (status) {
-    status.textContent = "";
-    status.classList.remove("is-error", "is-success");
-  }
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Відправляємо...";
-
-  try {
-    const response = await fetch("/api/lead", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      throw new Error("Webhook request failed");
-    }
-
-    if (typeof fbq === "function") {
-      fbq("track", "Lead");
-    }
-
-    sessionStorage.setItem("leadSubmitted", "true");
-    hideLeadPopup(true);
-
-    form.reset();
-
-    if (typeof turnstile !== "undefined" && typeof turnstile.reset === "function") {
-      turnstile.reset();
-    }
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      budget: budgetText,
+      turnstileToken: String(formData.get("cf-turnstile-response") || ""),
+      website: String(formData.get("website") || ""),
+    };
 
     if (status) {
-      status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";
-      status.classList.add("is-success");
+      status.textContent = "";
+      status.classList.remove("is-error", "is-success");
     }
-  } catch (error) {
-    if (status) {
-      status.textContent = "Не вдалося відправити заявку. Спробуйте ще раз.";
-      status.classList.add("is-error");
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Відправляємо...";
+
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("lead response", response.status);
+
+      if (!response.ok) {
+        throw new Error("Webhook request failed");
+      }
+
+      if (typeof fbq === "function") {
+        fbq("track", "Lead");
+      }
+
+      sessionStorage.setItem("leadSubmitted", "true");
+      hideLeadPopup(true);
+
+      form.reset();
+
+      if (typeof turnstile !== "undefined" && typeof turnstile.reset === "function") {
+        turnstile.reset();
+      }
+
+      if (status) {
+        status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";
+        status.classList.add("is-success");
+      }
+    } catch (error) {
+      if (status) {
+        status.textContent = "Не вдалося відправити заявку. Спробуйте ще раз.";
+        status.classList.add("is-error");
+      }
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Отримати підбір авто";
     }
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "Отримати підбір авто";
-  }
-});
+  });
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initLeadForm);
+} else {
+  initLeadForm();
+}
