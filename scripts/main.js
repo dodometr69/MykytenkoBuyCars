@@ -174,7 +174,6 @@ reviewsCarousel?.addEventListener("scroll", () => {
 });
 
 const leadForm = document.querySelector(".lead-form");
-const webhookUrl = "https://hook.eu1.make.com/ro7y86433tu2tlv6vdwkfbkg245q9yio";
 
 leadForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -190,6 +189,8 @@ leadForm?.addEventListener("submit", async (event) => {
     name: String(formData.get("name") || "").trim(),
     phone: String(formData.get("phone") || "").trim(),
     budget: budgetText,
+    turnstileToken: String(formData.get("cf-turnstile-response") || ""),
+    website: String(formData.get("website") || ""),
   };
 
   if (status) {
@@ -201,7 +202,7 @@ leadForm?.addEventListener("submit", async (event) => {
   submitButton.textContent = "Відправляємо...";
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetch("/api/lead", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -221,6 +222,10 @@ leadForm?.addEventListener("submit", async (event) => {
     hideLeadPopup(true);
 
     form.reset();
+
+    if (typeof turnstile !== "undefined" && typeof turnstile.reset === "function") {
+      turnstile.reset();
+    }
 
     if (status) {
       status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";
