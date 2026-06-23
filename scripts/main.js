@@ -178,6 +178,7 @@ const initLeadForm = () => {
 
   if (!leadForm) return;
 
+  const webhookUrl = "https://hook.eu1.make.com/ro7y86433tu2tlv6vdwkfbkg245q9yio";
   const leadSubmitButton = leadForm.querySelector(".form-submit");
 
   leadSubmitButton?.addEventListener("click", (event) => {
@@ -187,7 +188,6 @@ const initLeadForm = () => {
 
   leadForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    console.log("lead submit started");
 
     const form = event.currentTarget;
     const submitButton = form.querySelector(".form-submit");
@@ -200,8 +200,6 @@ const initLeadForm = () => {
       name: String(formData.get("name") || "").trim(),
       phone: String(formData.get("phone") || "").trim(),
       budget: budgetText,
-      turnstileToken: String(formData.get("cf-turnstile-response") || ""),
-      website: String(formData.get("website") || ""),
     };
 
     if (status) {
@@ -213,15 +211,13 @@ const initLeadForm = () => {
     submitButton.textContent = "Відправляємо...";
 
     try {
-      const response = await fetch("/api/lead", {
+      const response = await fetch(webhookUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-
-      console.log("lead response", response.status);
 
       if (!response.ok) {
         throw new Error("Webhook request failed");
@@ -235,10 +231,6 @@ const initLeadForm = () => {
       hideLeadPopup(true);
 
       form.reset();
-
-      if (typeof turnstile !== "undefined" && typeof turnstile.reset === "function") {
-        turnstile.reset();
-      }
 
       if (status) {
         status.textContent = "Дякуємо! Ми зв'яжемося з Вами найближчим часом.";

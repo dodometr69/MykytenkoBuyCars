@@ -1243,16 +1243,11 @@ h1 {
 
 .form-field,
 .budget-field,
-.turnstile-field,
 .form-submit,
 .form-note,
 .form-status {
   position: relative;
   z-index: 1;
-}
-
-.website-field {
-  display: none;
 }
 
 .form-field {
@@ -1319,19 +1314,6 @@ h1 {
   height: 22px;
   margin: 0;
   accent-color: var(--accent);
-}
-
-.turnstile-field {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 0 0 22px;
-  overflow: hidden;
-}
-
-.turnstile-field .cf-turnstile {
-  max-width: 100%;
-  transform-origin: center;
 }
 
 .form-submit {
@@ -2392,14 +2374,6 @@ h1 {
 
   .lead-form {
     padding: 20px;
-  }
-
-  .turnstile-field {
-    min-height: 58px;
-  }
-
-  .turnstile-field .cf-turnstile {
-    transform: scale(0.88);
   }
 
   .ukraine-check-section {
