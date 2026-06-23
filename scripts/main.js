@@ -200,6 +200,22 @@ const initLeadForm = () => {
       status.classList.remove("is-error", "is-success");
     }
 
+    if (!payload.name) {
+      if (status) {
+        status.textContent = "Введіть ваше ім’я";
+        status.classList.add("is-error");
+      }
+      return;
+    }
+
+    if (!payload.phone || payload.phone.replace(/\D/g, "").length < 8) {
+      if (status) {
+        status.textContent = "Введіть коректний номер телефону";
+        status.classList.add("is-error");
+      }
+      return;
+    }
+
     leadSubmitButton.disabled = true;
     leadSubmitButton.textContent = "Відправляємо...";
 
