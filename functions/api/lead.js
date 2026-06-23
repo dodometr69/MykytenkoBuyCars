@@ -52,7 +52,6 @@ export async function onRequest(context) {
     phone: cleanText(body.phone),
     budget: cleanText(body.budget),
   };
-  const turnstileToken = cleanText(body.turnstileToken);
   const website = cleanText(body.website);
   const validationError = validateLead(lead);
 
@@ -64,45 +63,8 @@ export async function onRequest(context) {
     return jsonResponse({ ok: true, spam: true });
   }
 
-  if (!turnstileToken || turnstileToken.length > 4096) {
-    return jsonResponse({ ok: false, error: "Turnstile verification failed" }, 403);
-  }
-
-  if (!env.TURNSTILE_SECRET_KEY || !env.MAKE_WEBHOOK_URL || !env.MAKE_WEBHOOK_API_KEY) {
+  if (!env.MAKE_WEBHOOK_URL || !env.MAKE_WEBHOOK_API_KEY) {
     return jsonResponse({ ok: false, error: "Server configuration error" }, 500);
-  }
-
-  const verificationData = new FormData();
-  verificationData.append("secret", env.TURNSTILE_SECRET_KEY);
-  verificationData.append("response", turnstileToken);
-
-  const remoteIp = request.headers.get("CF-Connecting-IP");
-
-  if (remoteIp) {
-    verificationData.append("remoteip", remoteIp);
-  }
-
-  let turnstileResponse;
-
-  try {
-    turnstileResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      body: verificationData,
-    });
-  } catch {
-    return jsonResponse({ ok: false, error: "Turnstile verification failed" }, 403);
-  }
-
-  let turnstileResult;
-
-  try {
-    turnstileResult = await turnstileResponse.json();
-  } catch {
-    return jsonResponse({ ok: false, error: "Turnstile verification failed" }, 403);
-  }
-
-  if (!turnstileResponse.ok || !turnstileResult.success) {
-    return jsonResponse({ ok: false, error: "Turnstile verification failed" }, 403);
   }
 
   let makeResponse;
