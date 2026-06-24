@@ -16,18 +16,16 @@ const readJson = async (request) => {
 
 const cleanText = (value) => (typeof value === "string" ? value.trim() : "");
 
-const validateLead = ({ name, phone, budget }) => {
-  if (!name || !phone || !budget) {
+const validateLead = ({ name, phone }) => {
+  if (!name || !phone) {
     return "Required fields are missing";
   }
 
-  if (name.length > 120 || phone.length > 60 || budget.length > 80) {
+  if (name.length > 120 || phone.length > 60) {
     return "Fields are too long";
   }
 
-  const phoneDigits = phone.replace(/\D/g, "");
-
-  if (phoneDigits.length < 8) {
+  if (phone.replace(/\D/g, "").length < 8) {
     return "Phone number is invalid";
   }
 
@@ -60,11 +58,19 @@ export async function onRequest(context) {
   }
 
   if (website) {
-    return jsonResponse({ ok: true, spam: true });
+    return jsonResponse({ ok: true });
   }
 
-  if (!env.MAKE_WEBHOOK_URL || !env.MAKE_WEBHOOK_API_KEY) {
+  if (!env.MAKE_WEBHOOK_URL) {
     return jsonResponse({ ok: false, error: "Server configuration error" }, 500);
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  if (env.MAKE_WEBHOOK_API_KEY) {
+    headers["x-make-apikey"] = env.MAKE_WEBHOOK_API_KEY;
   }
 
   let makeResponse;
@@ -72,10 +78,7 @@ export async function onRequest(context) {
   try {
     makeResponse = await fetch(env.MAKE_WEBHOOK_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-make-apikey": env.MAKE_WEBHOOK_API_KEY,
-      },
+      headers,
       body: JSON.stringify(lead),
     });
   } catch {

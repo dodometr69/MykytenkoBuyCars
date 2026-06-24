@@ -178,7 +178,6 @@ const initLeadForm = () => {
 
   if (!leadForm) return;
 
-  const webhookUrl = "https://hook.eu1.make.com/ro7y86433tu2tlv6vdwkfbkg245q9yio";
   const leadSubmitButton = leadForm.querySelector(".form-submit");
 
   leadSubmitButton?.addEventListener("click", async (event) => {
@@ -193,6 +192,7 @@ const initLeadForm = () => {
       name: String(formData.get("name") || "").trim(),
       phone: String(formData.get("phone") || "").trim(),
       budget: budgetText,
+      website: String(formData.get("website") || ""),
     };
 
     if (status) {
@@ -220,7 +220,7 @@ const initLeadForm = () => {
     leadSubmitButton.textContent = "Відправляємо...";
 
     try {
-      const response = await fetch(webhookUrl, {
+      const response = await fetch("/api/lead", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
