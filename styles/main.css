@@ -1784,6 +1784,15 @@ h1 {
     height: 16px;
   }
 
+  .lead-popup {
+    top: 58px;
+    right: 12px;
+    bottom: auto;
+    left: 12px;
+    width: auto;
+    transform: translateY(-120%);
+  }
+
   .menu-toggle {
     display: block;
     position: absolute;
@@ -2416,7 +2425,6 @@ h1 {
 
   .lead-popup {
     right: 12px;
-    bottom: 84px;
     left: 12px;
     width: auto;
     padding: 18px;
