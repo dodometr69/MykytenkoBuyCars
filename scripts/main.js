@@ -252,7 +252,7 @@ const initLeadForm = () => {
       }
     } finally {
       leadSubmitButton.disabled = false;
-      leadSubmitButton.textContent = "Отримати підбір авто";
+      leadSubmitButton.textContent = "Отримати 3 варіанти у моєму бюджеті";
     }
   });
 };
